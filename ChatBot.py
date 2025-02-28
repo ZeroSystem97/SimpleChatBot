@@ -1,4 +1,6 @@
 import random
+import requests
+from config import APIkey
 
 def greet():
     greetings = ["Hello", "Hi", "Hey", "Greetings"]
@@ -14,10 +16,36 @@ def tell_joke():
     ]
     return random.choice(jokes)
 
+def get_weather(city):
+    api_key = APIkey
+    base_url = "http://api.openweathermap.org/data/2.5/weather?"
+
+    complete_url = f"{base_url}q={city}&appid={api_key}&units=metric"
+
+    response = requests.get(complete_url)
+    data = response.json()
+
+    if data["cod"] == 200:
+        main = data["main"]
+        weather = data["weather"][0]
+
+        temperature = main["temp"]
+        pressure = main["pressure"]
+        humidity = main["humidity"]
+        description = weather["description"]
+
+        # Return formatted weather info
+        return (f"Weather in {city}:\n"
+                f"Temperature: {temperature}°C\n"
+                f"Pressure: {pressure} hPa\n"
+                f"Humidity: {humidity}%\n"
+                f"Description: {description.capitalize()}")
+    else:
+        return f"Sorry, I couldn't find the weather for {city}. Please check the city name."
+
 def respond_to_user_input(user_input):
     user_input = user_input.lower()
 
-    # Check for common questions and provide answers
     if "how are you" in user_input:
         return "I'm doing great, thank you for asking!"
     elif "hello" in user_input or "hi" in user_input:
@@ -32,6 +60,9 @@ def respond_to_user_input(user_input):
         return "I can help with basic tasks like chatting, answering simple questions, or telling jokes!"
     elif "joke" in user_input:
         return tell_joke()
+    elif "weather" in user_input:
+        city = input("Please enter the city name: ")
+        return get_weather(city)
     else:
         return "I'm sorry, I didn't understand that. Can you ask something else?"
 
@@ -43,7 +74,7 @@ def main():
         if "bye" in user_input.lower():
             print(f"Chatbot: {respond_to_user_input(user_input)}")
             break
-        print("Chatbot: ", respond_to_user_input(user_input))
+        print(f"Chatbot: {respond_to_user_input(user_input)}")
 
 if __name__ == "__main__":
     main()
