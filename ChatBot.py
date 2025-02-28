@@ -4,6 +4,16 @@ def greet():
     greetings = ["Hello", "Hi", "Hey", "Greetings"]
     return random.choice(greetings)
 
+def tell_joke():
+    jokes = [
+        "Why don't skeletons fight each other? They don't have the guts.",
+        "I told my wife she was drawing her eyebrows too high. She looked surprised.",
+        "Why did the scarecrow win an award? Because he was outstanding in his field!",
+        "I asked my dog what's two minus two. He said nothing.",
+        "Why don’t oysters share their pearls? Because they’re shellfish!"
+    ]
+    return random.choice(jokes)
+
 def respond_to_user_input(user_input):
     user_input = user_input.lower()
 
@@ -20,6 +30,8 @@ def respond_to_user_input(user_input):
         return "My purpose is to help you with simple conversations and tasks!"
     elif "help" in user_input:
         return "I can help with basic tasks like chatting, answering simple questions, or telling jokes!"
+    elif "joke" in user_input:
+        return tell_joke()
     else:
         return "I'm sorry, I didn't understand that. Can you ask something else?"
 
