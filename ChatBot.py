@@ -43,6 +43,8 @@ def get_weather(city):
     else:
         return f"Sorry, I couldn't find the weather for {city}. Please check the city name."
 
+context = {}
+
 def respond_to_user_input(user_input):
     user_input = user_input.lower()
 
@@ -57,14 +59,31 @@ def respond_to_user_input(user_input):
     elif "what is your purpose" in user_input:
         return "My purpose is to help you with simple conversations and tasks!"
     elif "help" in user_input:
-        return "I can help with basic tasks like chatting, answering simple questions, or telling jokes!"
+        return "I can help with basic tasks like chatting, answering simple questions, or telling jokes and weather!"
     elif "joke" in user_input:
         return tell_joke()
     elif "weather" in user_input:
         city = input("Please enter the city name: ")
         return get_weather(city)
+    elif "how's it going" in user_input or "what's up" in user_input:
+        return random.choice([
+            "Not much, just here to chat with you!",
+            "I'm just living the chatbot life. How about you?",
+            "Same old, same old. What’s going on with you?"
+        ])
+    elif "my name is" in user_input:
+        name = user_input.split("my name is ")[1]
+        context["name"] = name
+        return f"Nice to meet you, {name}!"
+
+    elif "what's my name" in user_input and "name" in context:
+        return f"Your name is {context['name']}."
     else:
-        return "I'm sorry, I didn't understand that. Can you ask something else?"
+        return random.choice([
+            "I'm sorry, I didn't understand that. Can you ask something else?",
+            "Hmm, that’s a bit unclear. Can you rephrase?",
+            "I didn't quite get that. Let's talk about something else!"
+        ])
 
 def main():
     print("Chatbot: Hi! How can I help you today?")
